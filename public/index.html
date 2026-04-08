@@ -6,42 +6,44 @@
 <title>Skatteberegner.no — AI-analyse av skattemeldingen din</title>
 <meta name="description" content="Last opp PDF av skattemeldingen. AI leser dokumentet, stiller smarte spørsmål og finner alle fradrag du har krav på. Gratis å prøve.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --black:#0a0a08;--white:#f5f3ee;--off:#edeae2;--border:#d0ccc2;
-  --green:#1a7a3c;--gl:#d4edda;--gb:#22a854;
+  --black:#0f1f2e;--white:#f0f4f8;--off:#e8eef4;--border:#c5d3df;
+  --green:#166534;--gl:#dcfce7;--gb:#2563eb;
   --red:#c0392b;--rl:#fdecea;
-  --gold:#c8930a;--goldl:#fef3cd;
-  --gray:#6b6b60;--grayl:#f0ede6;
-  --blue:#1a5276;--bluel:#d6eaf8;
+  --gold:#d4a843;--goldl:#fef3cd;
+  --gray:#5a7a94;--grayl:#e8eef4;
+  --blue:#2563eb;--bluel:#dbeafe;
+  --accent:#2563eb;--accent-light:#dbeafe;
+  --lbl:#60a5fa;
   --serif:'Playfair Display',Georgia,serif;
-  --sans:'Syne',system-ui,sans-serif;
-  --mono:'JetBrains Mono',monospace;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--white);color:var(--black);font-family:var(--sans);font-size:15px;line-height:1.6;overflow-x:hidden;}
 
 /* NAV */
-nav{background:var(--black);padding:0 36px;display:flex;align-items:center;border-bottom:3px solid var(--gb);position:sticky;top:0;z-index:100;gap:32px;}
+nav{background:var(--black);padding:0 36px;display:flex;align-items:center;border-bottom:3px solid var(--accent);position:sticky;top:0;z-index:100;gap:32px;}
 .nav-logo{font-family:var(--serif);font-size:22px;font-weight:900;padding:16px 0;color:var(--white);flex:1;text-decoration:none;}
-.nav-logo span{color:var(--gb);}
+.nav-logo span{color:#60a5fa;}
 .nav-link{color:#888;text-decoration:none;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;transition:color .2s;}
 .nav-link:hover{color:#fff;}
-.nav-cta{background:var(--gb);color:var(--black)!important;padding:8px 18px;border-radius:4px;font-size:12px;font-weight:800;text-decoration:none;letter-spacing:.5px;text-transform:uppercase;}
+.nav-cta{background:#2563eb;color:#fff!important;padding:8px 18px;border-radius:4px;font-size:12px;font-weight:800;text-decoration:none;letter-spacing:.5px;text-transform:uppercase;}
 
 /* HERO */
 .hero{background:var(--black);color:var(--white);padding:72px 36px 0;overflow:hidden;}
 .hero-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 440px;gap:64px;align-items:end;}
-.hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--gb);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
-.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--gb);}
+.hero-eyebrow{font-family:var(--mono);font-size:11px;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:#60a5fa;}
 .hero-h1{font-family:var(--serif);font-size:62px;font-weight:900;line-height:1.0;letter-spacing:-1px;margin-bottom:22px;}
-.hero-h1 em{font-style:italic;color:var(--gb);}
+.hero-h1 em{font-style:italic;color:#60a5fa;}
 .hero-desc{font-size:16px;color:#999;line-height:1.7;max-width:460px;margin-bottom:32px;}
-.hero-stats{display:flex;gap:28px;padding:22px 0;border-top:1px solid #2a2a2a;}
-.stat-n{font-family:var(--serif);font-size:28px;font-weight:900;color:var(--gb);line-height:1;margin-bottom:3px;}
-.stat-l{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.5px;}
+.hero-stats{display:flex;gap:28px;padding:22px 0;border-top:1px solid #1e3a52;}
+.stat-n{font-family:var(--serif);font-size:28px;font-weight:900;color:#60a5fa;line-height:1;margin-bottom:3px;}
+.stat-l{font-size:10px;color:#4a6a82;text-transform:uppercase;letter-spacing:.5px;}
 
 /* UPLOAD CARD */
 .upload-card{background:var(--white);border-radius:10px 10px 0 0;padding:28px;color:var(--black);box-shadow:0 -24px 60px rgba(0,0,0,.5);}
@@ -94,15 +96,15 @@ nav{background:var(--black);padding:0 36px;display:flex;align-items:center;borde
 .pstep.on,.pstep.ok{opacity:1;}.pstep.ok{opacity:.65;}
 .pico{width:24px;height:24px;border-radius:50%;background:var(--grayl);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
 .pstep.on .pico{border-color:var(--gb);background:var(--gl);}
-.pstep.ok .pico{border-color:var(--gb);background:var(--gb);color:#fff;}
-.spin{width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--gb);border-radius:50%;animation:sp .7s linear infinite;}
+.pstep.ok .pico{border-color:#2563eb;background:#2563eb;color:#fff;}
+.spin{width:11px;height:11px;border:2px solid var(--border);border-top-color:#2563eb;border-radius:50%;animation:sp .7s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg)}}
 
 .err-box{display:none;background:var(--rl);border:1px solid var(--red);border-radius:6px;padding:11px 14px;font-size:13px;color:var(--red);margin-top:10px;line-height:1.5;}
 .err-box.show{display:block;}
 
-.go-btn{width:100%;padding:14px;background:var(--gb);color:var(--black);border:none;border-radius:6px;font-family:var(--sans);font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;letter-spacing:.3px;}
-.go-btn:hover{background:var(--green);color:var(--white);}
+.go-btn{width:100%;padding:14px;background:#2563eb;color:#fff;border:none;border-radius:6px;font-family:var(--sans);font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;letter-spacing:.3px;}
+.go-btn:hover{background:#1d4ed8;color:#fff;}
 .go-btn:disabled{opacity:.4;cursor:not-allowed;}
 
 /* WIZARD */
@@ -110,24 +112,24 @@ nav{background:var(--black);padding:0 36px;display:flex;align-items:center;borde
 .wizard-overlay.show{display:flex;}
 .wizard-box{background:var(--white);border-radius:12px;max-width:520px;width:100%;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.4);}
 .wizard-header{background:var(--black);padding:24px 28px;color:var(--white);}
-.wizard-eyebrow{font-family:var(--mono);font-size:10px;color:var(--gb);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.wizard-eyebrow{font-family:var(--mono);font-size:10px;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
 .wizard-title{font-family:var(--serif);font-size:22px;font-weight:700;}
 .wizard-progress-bar{height:3px;background:#2a2a2a;margin-top:18px;}
-.wizard-progress-fill{height:100%;background:var(--gb);transition:width .4s ease;}
+.wizard-progress-fill{height:100%;background:#2563eb;transition:width .4s ease;}
 .wizard-body{padding:28px;}
 .wizard-q{font-size:17px;font-weight:700;margin-bottom:6px;line-height:1.4;}
 .wizard-hint{font-size:12px;color:var(--gray);margin-bottom:20px;line-height:1.5;}
 .wizard-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
 .wizard-opt{display:flex;align-items:center;gap:12px;padding:12px 16px;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:14px;font-weight:600;}
-.wizard-opt:hover{border-color:var(--gb);background:var(--gl);}
-.wizard-opt.selected{border-color:var(--gb);background:var(--gl);color:var(--green);}
+.wizard-opt:hover{border-color:#2563eb;background:#dbeafe;}
+.wizard-opt.selected{border-color:#2563eb;background:#dbeafe;color:#1e40af;}
 .wizard-opt-icon{font-size:20px;flex-shrink:0;}
 .wizard-input{width:100%;padding:11px 14px;border:2px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;outline:none;margin-bottom:20px;}
 .wizard-input:focus{border-color:var(--gb);}
 .wizard-footer{display:flex;justify-content:space-between;align-items:center;}
 .wizard-back{background:transparent;border:1px solid var(--border);border-radius:6px;padding:10px 20px;font-family:var(--sans);font-size:13px;cursor:pointer;color:var(--gray);}
 .wizard-back:hover{border-color:var(--black);color:var(--black);}
-.wizard-next{background:var(--black);color:var(--white);border:none;border-radius:6px;padding:11px 24px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;}
+.wizard-next{background:#0f1f2e;color:var(--white);border:none;border-radius:6px;padding:11px 24px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;}
 .wizard-next:hover{background:var(--green);}
 .wizard-step-count{font-family:var(--mono);font-size:11px;color:var(--gray);}
 
@@ -137,11 +139,14 @@ nav{background:var(--black);padding:0 36px;display:flex;align-items:center;borde
 .section-rule{display:flex;align-items:center;gap:16px;margin-bottom:44px;}
 .section-rule::before,.section-rule::after{content:'';flex:1;height:1px;background:var(--border);}
 .section-label{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);white-space:nowrap;}
-.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
-.how-item{background:var(--white);padding:32px 28px;}
-.how-num{font-family:var(--serif);font-size:52px;font-weight:900;color:var(--off);line-height:1;margin-bottom:14px;}
-.how-title{font-size:17px;font-weight:700;margin-bottom:8px;}
-.how-desc{font-size:13px;color:var(--gray);line-height:1.6;}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.how-item:nth-child(1){background:#0f1f2e;border-radius:12px;}
+.how-item:nth-child(2){background:#2563eb;border-radius:12px;}
+.how-item:nth-child(3){background:#1e3a52;border-radius:12px;}
+.how-item{background:#fff;padding:32px 28px;}
+.how-num{font-family:var(--serif);font-size:52px;font-weight:900;color:rgba(255,255,255,.12);line-height:1;margin-bottom:14px;}
+.how-title{font-size:17px;font-weight:700;margin-bottom:8px;color:#fff;}
+.how-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;}
 
 .features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:44px;}
 .feat-item{background:var(--white);padding:32px;}
@@ -165,7 +170,7 @@ nav{background:var(--black);padding:0 36px;display:flex;align-items:center;borde
 .price-features li{padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px;display:flex;align-items:center;gap:10px;}
 .price-card.feat .price-features li{border-color:rgba(0,0,0,.1);}
 .price-features li:last-child{border:none;}
-.pf-yes{color:var(--gb);flex-shrink:0;}
+.pf-yes{color:#60a5fa;flex-shrink:0;}
 .price-card.feat .pf-yes{color:var(--black);}
 .pf-no{color:#444;flex-shrink:0;}
 .pf-dim{opacity:.35;}
@@ -185,7 +190,7 @@ nav{background:var(--black);padding:0 36px;display:flex;align-items:center;borde
 .results-section{display:none;background:var(--grayl);border-top:3px solid var(--gb);padding:56px 36px;}
 .results-section.show{display:block;}
 .results-inner{max-width:900px;margin:0 auto;}
-.res-eyebrow{font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.res-eyebrow{font-family:var(--mono);font-size:11px;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
 .res-h2{font-family:var(--serif);font-size:34px;font-weight:900;margin-bottom:5px;}
 .res-sub{font-size:12px;color:var(--gray);margin-bottom:28px;font-family:var(--mono);}
 
@@ -195,7 +200,7 @@ nav{background:var(--black);padding:0 36px;display:flex;align-items:center;borde
 
 .free-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);margin-bottom:24px;}
 .free-box{background:var(--white);padding:24px 20px;}
-.free-box.green{background:var(--green);color:#fff;}
+.free-box.green{background:#1e40af;color:#fff;}
 .free-box.red{background:var(--red);color:#fff;}
 .free-box.blue{background:var(--blue);color:#fff;}
 .fb-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;opacity:.6;margin-bottom:7px;font-family:var(--mono);}
@@ -221,10 +226,10 @@ tr:last-child{border:none;}
 td{padding:8px 18px;font-size:13px;}
 td:last-child{text-align:right;font-family:var(--mono);font-size:12px;white-space:nowrap;}
 .sec td{background:var(--grayl);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gray);padding:5px 18px;}
-.ded td,.ded td:last-child{color:var(--green);}
+.ded td,.ded td:last-child{color:#2563eb;}
 .tax td,.tax td:last-child{color:var(--red);}
 .tot td{font-weight:700;font-size:13px;background:var(--off);}
-.net td,.net td:last-child{font-weight:700;font-size:15px;color:var(--green);background:var(--gl);}
+.net td,.net td:last-child{font-weight:700;font-size:15px;color:#60a5fa;background:#dbeafe;}
 
 /* Year comparison */
 .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);margin-bottom:18px;}
@@ -246,8 +251,8 @@ td:last-child{text-align:right;font-family:var(--mono);font-size:12px;white-spac
 .teaser-desc{font-size:13px;color:var(--gray);max-width:300px;line-height:1.6;}
 .teaser-price{font-family:var(--serif);font-size:34px;font-weight:900;color:var(--green);}
 .teaser-price span{font-size:15px;font-weight:400;color:var(--gray);}
-.unlock-btn{background:var(--gb);color:var(--black);border:none;border-radius:4px;padding:13px 28px;font-family:var(--sans);font-size:14px;font-weight:800;cursor:pointer;width:100%;max-width:260px;}
-.unlock-btn:hover{background:var(--green);color:#fff;}
+.unlock-btn{background:#2563eb;color:var(--black);border:none;border-radius:4px;padding:13px 28px;font-family:var(--sans);font-size:14px;font-weight:800;cursor:pointer;width:100%;max-width:260px;}
+.unlock-btn:hover{background:#1d4ed8;color:#fff;}
 .teaser-guarantee{font-size:11px;color:var(--gray);}
 
 /* Tips */
@@ -259,7 +264,7 @@ td:last-child{text-align:right;font-family:var(--mono);font-size:12px;white-spac
 .pdf-report-btn{display:flex;align-items:center;gap:10px;background:var(--black);color:var(--white);border:none;border-radius:6px;padding:13px 20px;font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;margin-bottom:16px;transition:all .2s;}
 .pdf-report-btn:hover{background:var(--green);}
 
-.pro-badge{background:var(--gb);color:var(--black);font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;font-family:var(--mono);letter-spacing:.5px;display:inline-block;margin-bottom:16px;}
+.pro-badge{background:#2563eb;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:99px;font-family:var(--mono);letter-spacing:.5px;display:inline-block;margin-bottom:16px;}
 .disc{font-size:12px;color:var(--gray);border-top:1px solid var(--border);padding-top:14px;margin-top:18px;line-height:1.7;}
 .disc a{color:var(--green);}
 .reset-btn{background:transparent;border:1px solid var(--border);border-radius:4px;padding:9px 22px;font-family:var(--sans);font-size:13px;cursor:pointer;color:var(--gray);margin-top:8px;transition:all .2s;}
@@ -271,13 +276,13 @@ td:last-child{text-align:right;font-family:var(--mono);font-size:12px;white-spac
 .modal-box{background:var(--white);border-radius:10px;padding:36px;max-width:420px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);}
 .email-input{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:14px;outline:none;margin-bottom:10px;}
 .email-input:focus{border-color:var(--gb);}
-.email-btn{width:100%;padding:12px;background:var(--gb);color:var(--black);border:none;border-radius:6px;font-family:var(--sans);font-size:14px;font-weight:800;cursor:pointer;}
+.email-btn{width:100%;padding:12px;background:#2563eb;color:var(--black);border:none;border-radius:6px;font-family:var(--sans);font-size:14px;font-weight:800;cursor:pointer;}
 
-footer{background:var(--black);color:var(--white);padding:36px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid var(--gb);}
+footer{background:#0f1f2e;color:#f0f4f8;padding:36px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid #2563eb;}
 .footer-logo{font-family:var(--serif);font-size:20px;font-weight:900;}
-.footer-logo span{color:var(--gb);}
+.footer-logo span{color:#60a5fa;}
 .footer-links{display:flex;gap:20px;}
-.footer-links a{color:#666;text-decoration:none;font-size:12px;}
+.footer-links a{color:#2a4a62;text-decoration:none;font-size:12px;}
 .footer-copy{font-size:12px;color:#444;}
 
 @media(max-width:860px){
@@ -288,7 +293,107 @@ footer{background:var(--black);color:var(--white);padding:36px;display:flex;just
   footer{flex-direction:column;gap:16px;text-align:center;padding:28px 20px;}
   .res-tabs{width:100%;}
 }
+
+
+.sneak-cta-btn:hover{background:var(--green);color:#fff;}
+
+
+/* ── SNIKTITT ── */
+.sneak-section{background:#0f1f2e;padding:80px 36px;border-top:1px solid #1e3a52;}
+.sneak-inner{max-width:980px;margin:0 auto;}
+.sneak-header{text-align:center;margin-bottom:48px;}
+.sneak-eyebrow{font-family:var(--mono);font-size:11px;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.sneak-h2{font-family:var(--serif);font-size:46px;font-weight:900;color:#fff;line-height:1.0;margin-bottom:12px;}
+.sneak-h2 em{color:#60a5fa;font-style:italic;}
+.sneak-sub{font-size:15px;color:#4a6a82;max-width:520px;margin:0 auto;line-height:1.6;}
+.sneak-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:#1e3a52;border:1px solid #1e3a52;border-radius:12px;overflow:hidden;margin-bottom:24px;}
+.sm-box{background:#162b3e;padding:24px 20px;}
+.sm-box.sm-highlight{background:#0f2b1a;}
+.sm-label{font-family:var(--mono);font-size:11px;color:#4a6a82;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.sm-val{font-family:var(--serif);font-size:26px;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;}
+.sm-val.sm-green{color:#4ade80;}
+.sm-val.sm-blue{color:#60a5fa;}
+.sm-sub{font-size:11px;color:#2a4a62;font-family:var(--mono);}
+.sneak-card{background:#0d1829;border:1px solid #1e3a52;border-radius:12px;overflow:hidden;}
+.sneak-card-header{background:#162b3e;border-bottom:1px solid #1e3a52;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;}
+.sch-left{display:flex;flex-direction:column;gap:4px;}
+.sch-title{font-family:var(--mono);font-size:12px;color:#60a5fa;letter-spacing:1.5px;text-transform:uppercase;}
+.sch-note{font-size:11px;color:#2a4a62;font-family:var(--mono);}
+.sch-badge{background:#2563eb;color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:99px;font-family:var(--mono);letter-spacing:.5px;}
+.sneak-body{padding:28px;}
+.sneak-two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:24px;margin-bottom:20px;}
+.sneak-right-col{display:flex;flex-direction:column;gap:14px;}
+.pp-table{width:100%;border-collapse:collapse;}
+.pp-table tr{border-bottom:1px solid #1e3a52;}
+.pp-table td{padding:10px 14px;font-size:13px;color:#6b8fa8;}
+.pp-table td:last-child{text-align:right;font-family:var(--mono);font-size:12px;color:#8aa8c0;}
+.pp-sec td{background:#162b3e;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#2a4a62;padding:6px 14px;}
+.pp-ded td,.pp-ded td:last-child{color:#4ade80 !important;}
+.pp-tax td,.pp-tax td:last-child{color:#f87171 !important;}
+.pp-tot td{font-weight:700;background:#162b3e;color:#fff !important;}
+.pp-net td,.pp-net td:last-child{font-weight:700;color:#4ade80 !important;background:#0f2b1a;}
+.sneak-finds-card{background:#0d1829;border:1px solid #1e3a52;border-radius:10px;padding:18px;}
+.sfc-header{font-family:var(--mono);font-size:11px;color:#60a5fa;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #1e3a52;}
+.sf-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #1a2a3a;}
+.sf-item:last-child{border:none;}
+.sf-icon-wrap{width:32px;height:32px;border-radius:8px;background:#1e3a52;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.sf-label{font-size:13px;color:#ccc;font-weight:600;margin-bottom:2px;}
+.sf-val{font-family:var(--mono);font-size:12px;color:#4ade80;font-weight:700;margin-bottom:2px;}
+.sf-desc{font-size:11px;color:#2a4a62;}
+.sf-total{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#1e3a52;border-radius:6px;margin-top:10px;font-size:13px;color:#6b8fa8;}
+.sf-total-val{font-family:var(--serif);font-size:20px;font-weight:900;color:#4ade80;}
+.sneak-marginal-card{background:#0d1829;border:1px solid #1e3a52;border-radius:10px;padding:18px;}
+.smc-header{font-family:var(--mono);font-size:11px;color:#60a5fa;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+.smc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1a2a3a;font-size:13px;color:#4a6a82;}
+.smc-row:last-child{border:none;}
+.smc-row.smc-highlight{background:#0f2b1a;margin:0 -18px;padding:10px 18px;border-radius:0 0 8px 8px;border:none;}
+.smc-val{font-family:var(--mono);font-size:13px;color:#fff;font-weight:600;}
+.smc-red{color:#f87171 !important;}
+.smc-blue{color:#60a5fa !important;}
+.smc-green{color:#4ade80 !important;}
+.sneak-tip-card{background:#162b1e;border:1px solid #1e3a2e;border-radius:10px;padding:14px 16px;font-size:13px;color:#5a8a6a;line-height:1.6;}
+.sneak-tip-card strong{color:#4ade80;}
+.sneak-disclaimer{background:#162b3e;border:1px solid #1e3a52;border-radius:6px;padding:14px 18px;margin-top:4px;}
+.sd-text{font-size:12px;color:#2a4a62;line-height:1.6;}
+.sd-text strong{color:#4a6a82;}
+.sneak-cta-area{display:flex;align-items:center;justify-content:space-between;gap:32px;background:#162b3e;border:1px solid #1e3a52;border-radius:12px;padding:32px 36px;margin-top:24px;}
+.sca-price{font-family:var(--serif);font-size:52px;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;}
+.sca-desc{font-size:14px;color:#4a6a82;margin-bottom:16px;}
+.sca-features{display:flex;flex-wrap:wrap;gap:8px;}
+.sca-features span{font-family:var(--mono);font-size:11px;color:#60a5fa;background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);padding:4px 10px;border-radius:4px;}
+.sneak-cta-right{display:flex;flex-direction:column;gap:10px;min-width:280px;}
+.pb-btn-large{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:16px 24px;font-family:var(--sans);font-size:15px;font-weight:700;cursor:pointer;width:100%;transition:all .2s;}
+.pb-btn-large:hover{background:#1d4ed8;}
+.sca-or{text-align:center;font-size:12px;color:#1e3a52;font-family:var(--mono);}
+.pb-btn-free{background:transparent;color:#4a6a82;border:1px solid #1e3a52;border-radius:8px;padding:12px 24px;font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;width:100%;transition:all .2s;}
+.pb-btn-free:hover{border-color:#4a6a82;color:#aaa;}
+@media(max-width:860px){
+  .sneak-metrics{grid-template-columns:1fr 1fr;}
+  .sneak-two-col{grid-template-columns:1fr;}
+  .sneak-cta-area{flex-direction:column;}
+  .sneak-cta-right{width:100%;}
+  .sneak-section{padding:48px 20px;}
+}
+
 </style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-745T652ZH8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-745T652ZH8');
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-745T652ZH8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-745T652ZH8');
+</script>
 </head>
 <body>
 
@@ -392,7 +497,7 @@ footer{background:var(--black);color:var(--white);padding:36px;display:flex;just
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="section" id="how">
+<section class="section" id="how" style="background:#fff;">
   <div class="section-inner">
     <div class="section-rule"><span class="section-label">Slik fungerer det</span></div>
     <div class="how-grid">
@@ -554,10 +659,162 @@ footer{background:var(--black);color:var(--white);padding:36px;display:flex;just
   </div>
 </section>
 
+
+
+
+
+<!-- SNIKTITT — PRO ANALYSE -->
+<section style="background:#0f1f2e;padding:80px 36px;border-top:1px solid #1e3a52;">
+  <div style="max-width:1020px;margin:0 auto;">
+
+    <!-- Header -->
+    <div style="text-align:center;margin-bottom:52px;">
+      <div style="font-family:var(--mono);font-size:11px;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Prøv før du kjøper</div>
+      <h2 style="font-family:var(--serif);font-size:48px;font-weight:900;color:#fff;line-height:1.0;margin-bottom:14px;">Slik ser <em style="color:#60a5fa;font-style:italic;">full analyse</em> ut</h2>
+      <p style="font-size:15px;color:#4a6a82;max-width:560px;margin:0 auto;line-height:1.7;">Under ser du et reelt eksempel på en full Pro-analyse med ekte beregningslinjer. Dine tall vil variere basert på din skattemelding.</p>
+    </div>
+
+    <!-- 4 nøkkeltall -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:#1e3a52;border-radius:12px;overflow:hidden;border:1px solid #1e3a52;margin-bottom:28px;">
+      <div style="background:#162b3e;padding:24px 20px;">
+        <div style="font-family:var(--mono);font-size:10px;color:#4a6a82;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Bruttoinntekt</div>
+        <div style="font-family:var(--serif);font-size:26px;font-weight:900;color:#fff;margin-bottom:4px;">516 500 kr</div>
+        <div style="font-size:11px;color:#2a4a62;font-family:var(--mono);">Lønn + naturalytelser</div>
+      </div>
+      <div style="background:#1a3a20;padding:24px 20px;">
+        <div style="font-family:var(--mono);font-size:10px;color:#4a9a60;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">✓ Til gode</div>
+        <div style="font-family:var(--serif);font-size:26px;font-weight:900;color:#4ade80;margin-bottom:4px;">18 340 kr</div>
+        <div style="font-size:11px;color:#2a4a2a;font-family:var(--mono);">Utbetales etter oppgjøret</div>
+      </div>
+      <div style="background:#162b3e;padding:24px 20px;">
+        <div style="font-family:var(--mono);font-size:10px;color:#4a6a82;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Nettoinntekt</div>
+        <div style="font-family:var(--serif);font-size:26px;font-weight:900;color:#60a5fa;margin-bottom:4px;">374 280 kr</div>
+        <div style="font-size:11px;color:#2a4a62;font-family:var(--mono);">Etter all skatt</div>
+      </div>
+      <div style="background:#162b3e;padding:24px 20px;">
+        <div style="font-family:var(--mono);font-size:10px;color:#4a6a82;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Effektiv skatt</div>
+        <div style="font-family:var(--serif);font-size:26px;font-weight:900;color:#fff;margin-bottom:4px;">27,6%</div>
+        <div style="font-size:11px;color:#2a4a62;font-family:var(--mono);">Marginalskatt 46,4%</div>
+      </div>
+    </div>
+
+    <!-- Hoved-kort -->
+    <div style="background:#0d1829;border:1px solid #1e3a52;border-radius:12px;overflow:hidden;margin-bottom:24px;">
+      <div style="background:#162b3e;border-bottom:1px solid #1e3a52;padding:18px 28px;display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <div style="font-family:var(--mono);font-size:12px;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;">📊 Detaljert skatteberegning 2025</div>
+          <div style="font-size:11px;color:#2a4a62;font-family:var(--mono);margin-top:3px;">Eksempelanalyse · Dine tall vil variere</div>
+        </div>
+        <span style="background:#2563eb;color:#fff;font-size:11px;font-weight:700;padding:5px 14px;border-radius:99px;font-family:var(--mono);letter-spacing:.5px;">✓ PRO ANALYSE</span>
+      </div>
+
+      <div style="padding:28px;display:grid;grid-template-columns:1.1fr .9fr;gap:24px;">
+
+        <!-- Venstre: Full tabell -->
+        <div>
+          <table style="width:100%;border-collapse:collapse;">
+            <tr style="background:#111827;"><td colspan="2" style="padding:7px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#2a4a62;font-family:var(--mono);">💰 Inntekter</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">Lønnsinntekt</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#aaa;">510 000 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">Naturalytelser</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#aaa;">6 500 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;background:#111827;"><td style="padding:10px 16px;font-size:13px;font-weight:700;color:#fff;">Sum bruttoinntekt</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:#fff;">516 500 kr</td></tr>
+
+            <tr style="background:#111827;"><td colspan="2" style="padding:7px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#2a4a62;font-family:var(--mono);">✂️ Fradrag</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">− Minstefradrag (46%)</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#3b82f6;">92 000 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">− Gjeldsrenter</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#3b82f6;">72 000 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">− Fagforeningskontingent</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#3b82f6;">6 200 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">− Reisefradrag</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#3b82f6;">3 800 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">− Personfradrag</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#3b82f6;">108 550 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;background:#111827;"><td style="padding:10px 16px;font-size:13px;font-weight:700;color:#fff;">= Alminnelig inntekt</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:#fff;">233 950 kr</td></tr>
+
+            <tr style="background:#111827;"><td colspan="2" style="padding:7px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#2a4a62;font-family:var(--mono);">🧾 Skatteberegning</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">Skatt alm. inntekt (22%)</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#f87171;">51 469 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">Trinnskatt</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#f87171;">16 532 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">Trygdeavgift (7,7%)</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#f87171;">39 270 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">− BSU-skattefradrag</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#3b82f6;">5 500 kr</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;background:#111827;"><td style="padding:10px 16px;font-size:13px;font-weight:700;color:#fff;">Total beregnet skatt</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:13px;font-weight:700;color:#fff;">101 771 kr</td></tr>
+
+            <tr style="background:#111827;"><td colspan="2" style="padding:7px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#2a4a62;font-family:var(--mono);">📋 Oppgjør</td></tr>
+            <tr style="border-bottom:1px solid #1a2a3a;"><td style="padding:10px 16px;font-size:13px;color:#8899aa;">Forskuddstrekk innbetalt</td><td style="padding:10px 16px;text-align:right;font-family:var(--mono);font-size:12px;color:#aaa;">120 111 kr</td></tr>
+            <tr style="background:#1a3a20;"><td style="padding:12px 16px;font-size:14px;font-weight:700;color:#4ade80;">✓ Til gode</td><td style="padding:12px 16px;text-align:right;font-family:var(--mono);font-size:15px;font-weight:900;color:#4ade80;">18 340 kr</td></tr>
+          </table>
+        </div>
+
+        <!-- Høyre: Veiviser + nøkkeltall -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+
+          <!-- Veiviser-funn -->
+          <div style="background:#0d1829;border:1px solid #1e3a52;border-radius:10px;padding:20px;">
+            <div style="font-family:var(--mono);font-size:11px;color:#60a5fa;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #1e3a52;">🧙 Fradragsveiviseren fant</div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #1a2a3a;">
+              <div style="width:34px;height:34px;border-radius:8px;background:#1e3a52;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🚌</div>
+              <div><div style="font-size:13px;color:#ccc;font-weight:600;margin-bottom:2px;">Reisefradrag</div><div style="font-family:var(--mono);font-size:12px;color:#4ade80;margin-bottom:2px;">+ 3 800 kr fradrag</div><div style="font-size:11px;color:#2a4a62;">Ikke registrert i skattemeldingen</div></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid #1a2a3a;">
+              <div style="width:34px;height:34px;border-radius:8px;background:#1e3a52;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🤝</div>
+              <div><div style="font-size:13px;color:#ccc;font-weight:600;margin-bottom:2px;">Fagforeningskontingent</div><div style="font-family:var(--mono);font-size:12px;color:#4ade80;margin-bottom:2px;">+ 6 200 kr fradrag</div><div style="font-size:11px;color:#2a4a62;">Ikke ført i skattemeldingen</div></div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;padding:10px 0;">
+              <div style="width:34px;height:34px;border-radius:8px;background:#1e3a52;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;">🏦</div>
+              <div><div style="font-size:13px;color:#ccc;font-weight:600;margin-bottom:2px;">BSU-skattefradrag</div><div style="font-family:var(--mono);font-size:12px;color:#4ade80;margin-bottom:2px;">− 5 500 kr direkte i skatt</div><div style="font-size:11px;color:#2a4a62;">20% av 27 500 kr BSU-innskudd</div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#1e3a52;border-radius:6px;margin-top:12px;">
+              <span style="font-size:13px;color:#6b8fa8;">Totalt funnet</span>
+              <span style="font-family:var(--serif);font-size:22px;font-weight:900;color:#4ade80;">+15 500 kr</span>
+            </div>
+          </div>
+
+          <!-- Nøkkeltall -->
+          <div style="background:#0d1829;border:1px solid #1e3a52;border-radius:10px;padding:20px;">
+            <div style="font-family:var(--mono);font-size:11px;color:#60a5fa;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;">📈 Skattenøkkeltall</div>
+            <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #1a2a3a;font-size:13px;color:#6b8fa8;"><span>Effektiv skatteprosent</span><span style="font-family:var(--mono);color:#fff;font-weight:600;">27,6%</span></div>
+            <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #1a2a3a;font-size:13px;color:#6b8fa8;"><span>Marginalskatt</span><span style="font-family:var(--mono);color:#fff;font-weight:600;">46,4%</span></div>
+            <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #1a2a3a;font-size:13px;color:#6b8fa8;"><span>Skatt per måned</span><span style="font-family:var(--mono);color:#f87171;font-weight:600;">8 481 kr</span></div>
+            <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #1a2a3a;font-size:13px;color:#6b8fa8;"><span>Netto per måned</span><span style="font-family:var(--mono);color:#60a5fa;font-weight:600;">31 190 kr</span></div>
+            <div style="display:flex;justify-content:space-between;padding:11px 14px;margin:8px -14px -14px;background:#1a3a20;border-radius:0 0 10px 10px;font-size:13px;color:#4ade80;"><span style="font-weight:600;">Penger til gode</span><span style="font-family:var(--mono);font-weight:700;">18 340 kr ✓</span></div>
+          </div>
+
+          <!-- Tips -->
+          <div style="background:#1c2f1c;border:1px solid #2d4a2d;border-radius:10px;padding:16px 18px;font-size:13px;color:#6b9a6b;line-height:1.6;">
+            💡 <strong style="color:#4ade80;">Tips:</strong> Eier du bolig med partner? To-persons modus beregner optimal fordeling av gjeldsrenter og kan spare dere for tusenvis av kroner ekstra.
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div style="margin:0 28px 28px;background:#162b3e;border:1px solid #1e3a52;border-radius:6px;padding:14px 18px;">
+        <p style="font-size:12px;color:#4a6a82;line-height:1.6;">⚠️ <strong style="color:#6b8fa8;">Viktig:</strong> Dette er et illustrativt eksempel — din analyse vil inneholde dine faktiske tall. Fradrag funnet av veiviseren er <em>mulige</em> fradrag. Alle fradrag kan allerede være korrekt registrert i skattemeldingen din. Skatteberegner.no er et estimatverktøy og erstatter ikke offisielle beregninger fra Skatteetaten. Vi er ikke autoriserte skatterådgivere.</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:32px;background:#162b3e;border:1px solid #1e3a52;border-radius:12px;padding:32px 36px;">
+      <div>
+        <div style="font-family:var(--serif);font-size:52px;font-weight:900;color:#fff;line-height:1;margin-bottom:4px;">99 kr</div>
+        <div style="font-size:14px;color:#4a6a82;margin-bottom:16px;">Engangsbeløp · Ubegrenset tilgang hele 2025</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="font-family:var(--mono);font-size:11px;color:#60a5fa;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);padding:4px 10px;border-radius:4px;">✓ Linje-for-linje analyse</span>
+          <span style="font-family:var(--mono);font-size:11px;color:#60a5fa;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);padding:4px 10px;border-radius:4px;">✓ To-persons modus</span>
+          <span style="font-family:var(--mono);font-size:11px;color:#60a5fa;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);padding:4px 10px;border-radius:4px;">✓ PDF-rapport</span>
+          <span style="font-family:var(--mono);font-size:11px;color:#60a5fa;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.2);padding:4px 10px;border-radius:4px;">✓ 7 dagers angrerett</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:280px;">
+        <button onclick="kjopTilgang()" style="background:#2563eb;color:#fff;border:none;border-radius:8px;padding:16px 28px;font-family:var(--sans);font-size:15px;font-weight:700;cursor:pointer;width:100%;">🔓 Lås opp full analyse — 99 kr</button>
+        <button onclick="document.getElementById('dz').click()" style="background:transparent;color:#6b8fa8;border:1px solid #1e3a52;border-radius:8px;padding:12px 28px;font-family:var(--sans);font-size:14px;font-weight:600;cursor:pointer;width:100%;">📄 Prøv én gratis analyse først</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
 <footer>
   <div class="footer-logo">Skatte<span>beregner</span>.no</div>
   <div class="footer-links">
-    <a href="#">Personvern</a><a href="#">Vilkår</a><a href="#">Kontakt</a>
+    <a href="/personvern.html">Personvern</a>
+    <a href="/vilkar.html">Vilkår</a>
+    <a href="/kontakt.html">Kontakt</a>
     <a href="https://www.skatteetaten.no" target="_blank">Skatteetaten.no</a>
   </div>
   <div class="footer-copy">© 2025 Skatteberegner.no</div>
