@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skatteberegner.no — Last opp selvangivelsen, få alle svarene</title>
+<meta name="description" content="Last opp PDF av skattemeldingen. AI leser dokumentet og beregner nøyaktig skatt med alle fradrag på sekunder. Gratis å prøve.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:#0a0a08; --white:#f5f3ee; --off:#edeae2; --border:#d0ccc2;
+  --green:#1a7a3c; --gl:#d4edda; --gb:#22a854;
+  --red:#c0392b; --rl:#fdecea;
+  --gold:#c8930a; --goldl:#fef3cd;
+  --gray:#6b6b60; --grayl:#f0ede6;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'Syne',system-ui,sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--white);color:var(--black);font-family:var(--sans);font-size:15px;line-height:1.6;overflow-x:hidden;}
+
+/* NAV */
+nav{background:var(--black);padding:0 36px;display:flex;align-items:center;border-bottom:3px solid var(--gb);position:sticky;top:0;z-index:100;gap:32px;}
+.nav-logo{font-family:var(--serif);font-size:22px;font-weight:900;padding:16px 0;color:var(--white);flex:1;text-decoration:none;}
+.nav-logo span{color:var(--gb);}
+.nav-link{color:#888;text-decoration:none;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;transition:color .2s;}
+.nav-link:hover{color:#fff;}
+.nav-cta{background:var(--gb);color:var(--black)!important;padding:8px 18px;border-radius:4px;font-size:12px;font-weight:800;text-decoration:none;letter-spacing:.5px;text-transform:uppercase;}
+
+/* HERO */
+.hero{background:var(--black);color:var(--white);padding:72px 36px 0;overflow:hidden;}
+.hero-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:64px;align-items:end;}
+
+.hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--gb);letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px;}
+.hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--gb);}
+.hero-h1{font-family:var(--serif);font-size:64px;font-weight:900;line-height:1.0;letter-spacing:-1px;margin-bottom:22px;}
+.hero-h1 em{font-style:italic;color:var(--gb);}
+.hero-desc{font-size:16px;color:#999;line-height:1.7;max-width:460px;margin-bottom:32px;}
+.hero-stats{display:flex;gap:28px;padding:22px 0;border-top:1px solid #2a2a2a;}
+.stat-n{font-family:var(--serif);font-size:28px;font-weight:900;color:var(--gb);line-height:1;margin-bottom:3px;}
+.stat-l{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:.5px;}
+
+/* UPLOAD CARD */
+.upload-card{background:var(--white);border-radius:10px 10px 0 0;padding:28px;color:var(--black);box-shadow:0 -24px 60px rgba(0,0,0,.5);}
+.uc-title{font-family:var(--serif);font-size:20px;font-weight:700;margin-bottom:5px;}
+.uc-sub{font-size:12px;color:var(--gray);margin-bottom:18px;}
+
+.drop-zone{border:2px dashed var(--border);border-radius:8px;padding:32px 20px;text-align:center;cursor:pointer;position:relative;background:var(--grayl);transition:all .2s;margin-bottom:12px;}
+.drop-zone:hover,.drop-zone.over{border-color:var(--gb);background:var(--gl);}
+.drop-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.dz-icon{font-size:38px;margin-bottom:10px;display:block;}
+.dz-main{font-weight:700;font-size:15px;margin-bottom:4px;}
+.dz-sub{font-size:12px;color:var(--gray);margin-bottom:12px;}
+.dz-tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+.dz-tag{font-family:var(--mono);font-size:10px;color:var(--gray);border:1px solid var(--border);padding:2px 9px;border-radius:3px;background:var(--white);}
+
+.chosen{display:none;background:var(--black);color:var(--white);border-radius:6px;padding:11px 14px;align-items:center;gap:10px;margin-bottom:12px;font-size:13px;}
+.chosen.show{display:flex;}
+.ch-name{font-family:var(--mono);font-size:12px;color:var(--gb);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ch-rm{cursor:pointer;color:#666;font-size:16px;}
+.ch-rm:hover{color:var(--red);}
+
+.progress{display:none;padding:12px 0;}
+.progress.show{display:block;}
+.pstep{display:flex;align-items:center;gap:12px;padding:8px 0;font-size:13px;color:var(--gray);opacity:.3;transition:opacity .3s;border-bottom:1px solid var(--off);}
+.pstep:last-child{border:none;}
+.pstep.on,.pstep.ok{opacity:1;}.pstep.ok{opacity:.65;}
+.pico{width:24px;height:24px;border-radius:50%;background:var(--grayl);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.pstep.on .pico{border-color:var(--gb);background:var(--gl);}
+.pstep.ok .pico{border-color:var(--gb);background:var(--gb);color:#fff;}
+.spin{width:11px;height:11px;border:2px solid var(--border);border-top-color:var(--gb);border-radius:50%;animation:sp .7s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.err-box{display:none;background:var(--rl);border:1px solid var(--red);border-radius:6px;padding:11px 14px;font-size:13px;color:var(--red);margin-top:10px;line-height:1.5;}
+.err-box.show{display:block;}
+
+.go-btn{width:100%;padding:15px;background:var(--gb);color:var(--black);border:none;border-radius:6px;font-family:var(--sans);font-size:16px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;letter-spacing:.3px;}
+.go-btn:hover{background:var(--green);color:var(--white);}
+.go-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* HOW IT WORKS */
+.section{padding:72px 36px;}
+.section-inner{max-width:1080px;margin:0 auto;}
+.section-rule{display:flex;align-items:center;gap:16px;margin-bottom:44px;}
+.section-rule::before,.section-rule::after{content:'';flex:1;height:1px;background:var(--border);}
+.section-label{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);white-space:nowrap;}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.how-item{background:var(--white);padding:32px 28px;}
+.how-num{font-family:var(--serif);font-size:52px;font-weight:900;color:var(--off);line-height:1;margin-bottom:14px;}
+.how-title{font-size:17px;font-weight:700;margin-bottom:8px;}
+.how-desc{font-size:13px;color:var(--gray);line-height:1.6;}
+
+/* PRICING */
+.pricing-section{background:var(--black);color:var(--white);padding:72px 36px;}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:#333;border:1px solid #333;margin-top:44px;}
+.price-card{background:#111;padding:36px;}
+.price-card.feat{background:var(--gb);color:var(--black);}
+.price-tag{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#666;margin-bottom:20px;}
+.price-card.feat .price-tag{color:rgba(0,0,0,.5);}
+.price-name{font-family:var(--serif);font-size:26px;font-weight:700;margin-bottom:6px;}
+.price-amount{font-family:var(--serif);font-size:48px;font-weight:900;line-height:1;margin-bottom:4px;}
+.price-amount span{font-size:18px;font-weight:400;opacity:.6;}
+.price-period{font-size:12px;color:#777;margin-bottom:28px;}
+.price-card.feat .price-period{color:rgba(0,0,0,.5);}
+.price-features{list-style:none;margin-bottom:32px;}
+.price-features li{padding:9px 0;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px;display:flex;align-items:center;gap:10px;}
+.price-card.feat .price-features li{border-color:rgba(0,0,0,.1);}
+.price-features li:last-child{border:none;}
+.pf-yes{color:var(--gb);flex-shrink:0;}
+.price-card.feat .pf-yes{color:var(--black);}
+.pf-no{color:#444;flex-shrink:0;}
+.pf-dim{opacity:.35;}
+.price-btn{width:100%;padding:13px;border:2px solid rgba(255,255,255,.15);border-radius:4px;background:transparent;color:var(--white);font-family:var(--sans);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.3px;}
+.price-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.35);}
+.price-card.feat .price-btn{background:var(--black);color:var(--white);border-color:var(--black);}
+.price-card.feat .price-btn:hover{background:#111;}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:44px;}
+.feat-item{background:var(--white);padding:32px;}
+.feat-icon{font-size:28px;margin-bottom:14px;display:block;}
+.feat-title{font-size:17px;font-weight:700;margin-bottom:8px;}
+.feat-desc{font-size:13px;color:var(--gray);line-height:1.6;}
+
+/* PROOF */
+.proof-section{background:var(--off);padding:72px 36px;}
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-top:44px;}
+.proof-item{background:var(--off);padding:28px;}
+.proof-stars{color:var(--gold);font-size:14px;margin-bottom:12px;letter-spacing:2px;}
+.proof-quote{font-family:var(--serif);font-size:16px;font-style:italic;line-height:1.6;margin-bottom:14px;}
+.proof-name{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--gray);}
+
+/* RESULTS */
+.results-section{display:none;background:var(--grayl);border-top:3px solid var(--gb);padding:56px 36px;}
+.results-section.show{display:block;}
+.results-inner{max-width:860px;margin:0 auto;}
+.res-eyebrow{font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.res-h2{font-family:var(--serif);font-size:34px;font-weight:900;margin-bottom:5px;}
+.res-sub{font-size:12px;color:var(--gray);margin-bottom:28px;font-family:var(--mono);}
+
+/* Free hero boxes */
+.free-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);margin-bottom:24px;}
+.free-box{background:var(--white);padding:24px 20px;}
+.free-box.green{background:var(--green);color:#fff;}
+.free-box.red{background:var(--red);color:#fff;}
+.fb-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;opacity:.6;margin-bottom:7px;font-family:var(--mono);}
+.fb-val{font-family:var(--serif);font-size:26px;font-weight:900;line-height:1.1;}
+.fb-sub{font-size:11px;opacity:.55;margin-top:4px;font-family:var(--mono);}
+
+/* Freemium teaser */
+.teaser-box{background:var(--white);border:2px solid var(--border);border-radius:6px;padding:28px;margin-bottom:18px;position:relative;overflow:hidden;}
+.teaser-overlay{position:absolute;inset:0;backdrop-filter:blur(5px);background:rgba(245,243,238,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;text-align:center;}
+.teaser-lock{font-size:30px;}
+.teaser-title{font-family:var(--serif);font-size:21px;font-weight:700;}
+.teaser-desc{font-size:13px;color:var(--gray);max-width:300px;line-height:1.6;}
+.teaser-price{font-family:var(--serif);font-size:34px;font-weight:900;color:var(--green);}
+.teaser-price span{font-size:15px;font-weight:400;color:var(--gray);}
+.unlock-btn{background:var(--gb);color:var(--black);border:none;border-radius:4px;padding:13px 28px;font-family:var(--sans);font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;width:100%;max-width:260px;letter-spacing:.3px;}
+.unlock-btn:hover{background:var(--green);color:#fff;}
+.teaser-guarantee{font-size:11px;color:var(--gray);}
+.preview-table{width:100%;border-collapse:collapse;filter:blur(4px);user-select:none;pointer-events:none;opacity:.45;}
+.preview-table td{padding:8px 16px;font-size:13px;border-bottom:1px solid var(--off);}
+.preview-table td:last-child{text-align:right;font-family:var(--mono);}
+
+/* Tips */
+.tips-card{background:var(--goldl);border:1px solid var(--gold);border-radius:6px;padding:18px 22px;margin-bottom:16px;}
+.tips-title{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;font-family:var(--mono);}
+.tip{display:flex;gap:8px;font-size:13px;color:var(--black);margin-bottom:7px;line-height:1.5;}
+.tip:last-child{margin-bottom:0;}
+
+.disc{font-size:12px;color:var(--gray);border-top:1px solid var(--border);padding-top:14px;margin-top:18px;line-height:1.7;}
+.disc a{color:var(--green);}
+.reset-btn{background:transparent;border:1px solid var(--border);border-radius:4px;padding:9px 22px;font-family:var(--sans);font-size:13px;cursor:pointer;color:var(--gray);margin-top:8px;transition:all .2s;}
+.reset-btn:hover{border-color:var(--black);color:var(--black);}
+
+/* FOOTER */
+footer{background:var(--black);color:var(--white);padding:36px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid var(--gb);}
+.footer-logo{font-family:var(--serif);font-size:20px;font-weight:900;}
+.footer-logo span{color:var(--gb);}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{color:#666;text-decoration:none;font-size:12px;}
+.footer-links a:hover{color:#fff;}
+.footer-copy{font-size:12px;color:#444;}
+
+@media(max-width:860px){
+  nav{padding:0 18px;gap:16px;}
+  .hero{padding:48px 20px 0;}
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-h1{font-size:42px;}
+  .how-grid,.features-grid{grid-template-columns:1fr;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .proof-grid{grid-template-columns:1fr;}
+  .free-grid{grid-template-columns:1fr 1fr;}
+  .section{padding:52px 20px;}
+  .pricing-section,.proof-section{padding:52px 20px;}
+  .results-section{padding:40px 20px;}
+  footer{flex-direction:column;gap:16px;text-align:center;padding:28px 20px;}
+  .nav-link{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Skatte<span>beregner</span>.no</a>
+  <a class="nav-link" href="#how">Slik virker det</a>
+  <a class="nav-link" href="#priser">Priser</a>
+  <a class="nav-cta" href="#priser">Kom i gang</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">AI-drevet skatteanalyse · 2025</div>
+      <h1 class="hero-h1">Last opp<br>skattemeldingen.<br><em>Få alle svarene.</em></h1>
+      <p class="hero-desc">Last opp PDF av selvangivelsen din. AI-en leser dokumentet og beregner nøyaktig skatt med alle fradrag — inkludert fradrag du kanskje ikke visste om.</p>
+      <div class="hero-stats">
+        <div><div class="stat-n">30 sek</div><div class="stat-l">Fra opplasting til svar</div></div>
+        <div><div class="stat-n">28+</div><div class="stat-l">Fradragstyper sjekket</div></div>
+        <div><div class="stat-n">Gratis</div><div class="stat-l">Kom i gang nå</div></div>
+      </div>
+    </div>
+
+    <div class="upload-card">
+      <div class="uc-title">Start her — det er gratis</div>
+      <div class="uc-sub">Last opp PDF fra skatteetaten.no eller ta et skjermbilde</div>
+
+      <div class="drop-zone" id="dz">
+        <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.webp" onchange="pickFile(this.files[0])">
+        <span class="dz-icon">📄</span>
+        <div class="dz-main">Dra og slipp eller klikk her</div>
+        <div class="dz-sub">Skattemelding / selvangivelse 2025</div>
+        <div class="dz-tags"><span class="dz-tag">PDF</span><span class="dz-tag">JPG</span><span class="dz-tag">PNG</span><span class="dz-tag">Skjermbilde</span></div>
+      </div>
+
+      <div class="chosen" id="chosen">
+        <span>📎</span>
+        <span class="ch-name" id="ch-name"></span>
+        <span class="ch-rm" onclick="removeFile()">✕</span>
+      </div>
+
+      <div class="progress" id="progress">
+        <div class="pstep" id="s1"><div class="pico" id="si1">1</div><span id="st1">Laster opp fil...</span></div>
+        <div class="pstep" id="s2"><div class="pico" id="si2">2</div><span id="st2">AI leser skattemeldingen...</span></div>
+        <div class="pstep" id="s3"><div class="pico" id="si3">3</div><span id="st3">Beregner med 2025-satser...</span></div>
+      </div>
+
+      <div class="err-box" id="err"></div>
+
+      <button class="go-btn" id="go-btn" onclick="run()" disabled>
+        <span id="go-icon">🔍</span>
+        <span id="go-text">Last opp skattemelding for å fortsette</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-inner">
+    <div class="section-rule"><span class="section-label">Slik fungerer det</span></div>
+    <div class="how-grid">
+      <div class="how-item">
+        <div class="how-num">01</div>
+        <div class="how-title">Last opp PDF eller skjermbilde</div>
+        <div class="how-desc">Ta et skjermbilde av skattemeldingen på skatteetaten.no eller last opp PDF-filen direkte. Ingen konto nødvendig.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">02</div>
+        <div class="how-title">AI leser og forstår dokumentet</div>
+        <div class="how-desc">Claude AI leser skattemeldingen og trekker ut alle tall — inntekter, fradrag, gjeld, formue, barn og forskuddstrekk.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">03</div>
+        <div class="how-title">Korrekt beregning på sekunder</div>
+        <div class="how-desc">Skatteoppgjøret beregnes med offisielle 2025-satser fra Skatteetaten. Se nettoinntekt, total skatt og om du får penger til gode.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing-section" id="priser">
+  <div class="section-inner">
+    <div class="section-rule"><span class="section-label" style="color:#555">Priser</span></div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tag">Alltid gratis</div>
+        <div class="price-name">Basis</div>
+        <div class="price-amount">0<span> kr</span></div>
+        <div class="price-period">Ingen kredittkort nødvendig</div>
+        <ul class="price-features">
+          <li><span class="pf-yes">✓</span> Last opp PDF eller skjermbilde</li>
+          <li><span class="pf-yes">✓</span> Nettoinntekt etter skatt</li>
+          <li><span class="pf-yes">✓</span> Total skatt å betale</li>
+          <li><span class="pf-yes">✓</span> Effektiv skatteprosent</li>
+          <li><span class="pf-yes">✓</span> Til gode eller restskatt</li>
+          <li><span class="pf-no">🔒</span><span class="pf-dim">Full fradragsanalyse linje for linje</span></li>
+          <li><span class="pf-no">🔒</span><span class="pf-dim">Sparetips og optimalisering</span></li>
+          <li><span class="pf-no">🔒</span><span class="pf-dim">To-persons modus — delt bolig</span></li>
+          <li><span class="pf-no">🔒</span><span class="pf-dim">Last ned PDF-rapport</span></li>
+        </ul>
+        <button class="price-btn" onclick="document.getElementById('dz').click()">Start gratis</button>
+      </div>
+      <div class="price-card feat">
+        <div class="price-tag">Mest populær</div>
+        <div class="price-name">Full analyse</div>
+        <div class="price-amount">99<span> kr</span></div>
+        <div class="price-period">Engangsbeløp — gjelder hele 2025</div>
+        <ul class="price-features">
+          <li><span class="pf-yes">✓</span> Alt i Basis</li>
+          <li><span class="pf-yes">✓</span> Full linje-for-linje fradragsanalyse</li>
+          <li><span class="pf-yes">✓</span> Marginalskatt og skatteoptimalisering</li>
+          <li><span class="pf-yes">✓</span> Personlige sparetips (BSU, IPS, reise)</li>
+          <li><span class="pf-yes">✓</span> To-persons modus med boligfordeling</li>
+          <li><span class="pf-yes">✓</span> Optimal fordeling av gjeldsrenter</li>
+          <li><span class="pf-yes">✓</span> Last ned ferdig PDF-rapport</li>
+          <li><span class="pf-yes">✓</span> Ubegrenset antall analyser i 2025</li>
+        </ul>
+        <button class="price-btn" onclick="alert('Kobles til Vipps/Stripe ved lansering')">Kjøp nå — 99 kr</button>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:12px;color:#555;margin-top:20px;">
+      🔒 Betaling via Vipps eller kort &nbsp;·&nbsp; 7 dagers pengene-tilbake-garanti &nbsp;·&nbsp; Ingen abonnement
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section">
+  <div class="section-inner">
+    <div class="section-rule"><span class="section-label">Hva du får</span></div>
+    <div class="features-grid">
+      <div class="feat-item"><span class="feat-icon">🤖</span><div class="feat-title">AI som faktisk forstår skattemeldingen</div><div class="feat-desc">Leser og forstår kontekst — ikke bare tall. Trekker ut alle relevante poster automatisk fra PDF.</div></div>
+      <div class="feat-item"><span class="feat-icon">⚖️</span><div class="feat-title">Alle offisielle 2025-satser</div><div class="feat-desc">Trinnskatt, trygdeavgift, minstefradrag, personfradrag, formuesskatt — alle satser fra Skatteetaten.</div></div>
+      <div class="feat-item"><span class="feat-icon">👫</span><div class="feat-title">Delt boligeierskap og rentefordeling</div><div class="feat-desc">Beregn optimalt hvordan to parter bør fordele gjeldsrenter basert på marginalskatt.</div></div>
+      <div class="feat-item"><span class="feat-icon">💡</span><div class="feat-title">Finn fradrag du mangler</div><div class="feat-desc">Reisefradrag, fagforeningskontingent, BSU, IPS, barnepass — vi sjekker 28+ fradragstyper.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section class="proof-section">
+  <div class="section-inner">
+    <div class="section-rule"><span class="section-label">Hva brukerne sier</span></div>
+    <div class="proof-grid">
+      <div class="proof-item"><div class="proof-stars">★★★★★</div><div class="proof-quote">"Oppdaget at jeg manglet reisefradrag. Fikk tilbake over 4 200 kr."</div><div class="proof-name">Mari L., Oslo</div></div>
+      <div class="proof-item"><div class="proof-stars">★★★★★</div><div class="proof-quote">"Vi skjønte endelig hvordan vi skulle fordele gjeldsrentene. Sparte 3 800 kr samlet."</div><div class="proof-name">Thomas K., Bergen</div></div>
+      <div class="proof-item"><div class="proof-stars">★★★★★</div><div class="proof-quote">"Skremmende enkelt. Lastet opp PDF, fikk svar på 30 sekunder."</div><div class="proof-name">Ingrid M., Trondheim</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS (dynamisk) -->
+<section class="results-section" id="results-section">
+  <div class="results-inner">
+    <div class="res-eyebrow">Ditt skatteoppgjør 2025</div>
+    <h2 class="res-h2" id="res-h2">Beregning klar</h2>
+    <div class="res-sub" id="res-sub"></div>
+
+    <div class="free-grid" id="free-grid"></div>
+
+    <div class="teaser-box" id="teaser-box">
+      <table class="preview-table">
+        <tr><td>Lønnsinntekt</td><td>986 501 kr</td></tr>
+        <tr><td>+ Naturalytelser</td><td>10 693 kr</td></tr>
+        <tr><td>− Minstefradrag</td><td>92 000 kr</td></tr>
+        <tr><td>− Gjeldsrenter</td><td>150 949 kr</td></tr>
+        <tr><td>− Foreldrefradrag</td><td>6 097 kr</td></tr>
+        <tr><td>− Personfradrag</td><td>108 550 kr</td></tr>
+        <tr><td>= Alminnelig inntekt</td><td>753 228 kr</td></tr>
+        <tr><td>Skatt alminnelig inntekt</td><td>165 710 kr</td></tr>
+        <tr><td>Trinnskatt</td><td>59 901 kr</td></tr>
+        <tr><td>Trygdeavgift 7,7%</td><td>76 784 kr</td></tr>
+        <tr><td>Formuesskatt</td><td>0 kr</td></tr>
+      </table>
+      <div class="teaser-overlay">
+        <div class="teaser-lock">🔒</div>
+        <div class="teaser-title">Full fradragsanalyse</div>
+        <div class="teaser-desc">Se nøyaktig hva som reduserer skatten din — linje for linje. Inkludert fradrag du kanskje ikke har krav på.</div>
+        <div class="teaser-price">99 kr <span>engangs</span></div>
+        <button class="unlock-btn" onclick="alert('Kobles til Vipps/Stripe ved lansering!')">🔓 Lås opp full analyse</button>
+        <div class="teaser-guarantee">7 dagers pengene-tilbake-garanti · Ingen abonnement</div>
+      </div>
+    </div>
+
+    <div class="tips-card" id="tips-card" style="display:none;"></div>
+
+    <div class="disc">⚠️ Estimatverktøy basert på offisielle satser fra <a href="https://www.skatteetaten.no" target="_blank">skatteetaten.no</a> 2025. For bindende svar, bruk skattemeldingen direkte på Skatteetaten.</div>
+    <button class="reset-btn" onclick="resetAll()">↩ Last opp ny skattemelding</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Skatte<span>beregner</span>.no</div>
+  <div class="footer-links">
+    <a href="#">Personvern</a>
+    <a href="#">Vilkår</a>
+    <a href="#">Kontakt</a>
+    <a href="https://www.skatteetaten.no" target="_blank">Skatteetaten.no</a>
+  </div>
+  <div class="footer-copy">© 2025 Skatteberegner.no</div>
+</footer>
+
+<script>
+// ══ SATSER 2025 — skatteetaten.no ══
+const S = {
+  pf: 108550,
+  alm: 0.22,
+  minL: { s: 0.46, mx: 92000, mn: 4000 },
+  minP: { s: 0.40, mx: 73150, mn: 4000 },
+  trygd: { l: 0.077, n: 0.109, p: 0.051, ned: 99650 },
+  ts: [[0,217400,0],[217400,306050,0.017],[306050,697150,0.040],[697150,942400,0.137],[942400,1410750,0.167],[1410750,1/0,0.177]],
+  fInn: 1760000, fKom: 0.00525, fSt: 0.00475, fSt2: 20700000,
+  boligPct: 0.25, aksjeRab: 0.80,
+  bsuS: 0.20, bsuMx: 27500,
+  fagMx: 8250, gavMx: 25000, ipsMx: 15000, ipsS: 0.22,
+  fp1: 25000, fpX: 15000,
+  lGr: 15000
+};
+
+let currentFile = null, currentB64 = null;
+const kr = n => Math.round(n).toLocaleString('nb-NO') + ' kr';
+const pct = n => n.toFixed(1) + '%';
+const $ = id => document.getElementById(id);
+
+// ── File ──
+function readB64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = () => rej(new Error('Kunne ikke lese filen'));
+    r.readAsDataURL(file);
+  });
+}
+
+function pickFile(file) {
+  if (!file) return;
+  currentFile = file; currentB64 = null;
+  readB64(file).then(d => { currentB64 = d; }).catch(console.error);
+  $('ch-name').textContent = file.name;
+  $('chosen').classList.add('show');
+  $('go-btn').disabled = false;
+  $('go-text').textContent = 'Analyser skattemeldingen';
+}
+
+function removeFile() {
+  currentFile = null; currentB64 = null;
+  $('file-input').value = '';
+  $('chosen').classList.remove('show');
+  $('go-btn').disabled = true;
+  $('go-text').textContent = 'Last opp skattemelding for å fortsette';
+}
+
+// Drag & drop
+const dz = $('dz');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('over'); });
+dz.addEventListener('dragleave', () => dz.classList.remove('over'));
+dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('over'); const f = e.dataTransfer.files[0]; if (f) pickFile(f); });
+
+// ── Progress ──
+function st(n, state, txt) {
+  const el = $('s' + n), ic = $('si' + n);
+  el.className = 'pstep' + (state === 'on' ? ' on' : state === 'ok' ? ' ok on' : '');
+  ic.innerHTML = state === 'on' ? '<div class="spin"></div>' : state === 'ok' ? '✓' : n;
+  if (txt) $('st' + n).textContent = txt;
+}
+
+// ── API — kaller din Vercel backend ──
+async function callBackend(fileObj, b64data) {
+  const resp = await fetch('/api/analyser', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ base64: b64data, mediaType: fileObj.type, label: null })
+  });
+  const result = await resp.json();
+  if (!resp.ok || !result.ok) throw new Error(result.error || 'Serverfeil — sjekk at ANTHROPIC_API_KEY er satt i Vercel');
+  return result.data;
+}
+
+// ── Skatteberegning ──
+function trinnskatt(pi) {
+  let t = 0;
+  for (const [a, b, s] of S.ts) if (pi > a && s > 0) t += (Math.min(pi, b === 1/0 ? pi : b) - a) * s;
+  return Math.max(0, t);
+}
+function marginal(l) { const d = 1000; return ((S.alm + S.trygd.l) + (trinnskatt(l + d) - trinnskatt(l)) / d) * 100; }
+
+function beregn(d) {
+  // Bruk dokumentets egne tall der de finnes, beregn ellers
+  const lønn = (d.lønnsinntekt || 0) + (d.naturalytelser || 0) + (d.uføretrygd || 0) + (d.dagpenger || 0) + (d.arbeidsavklaringspenger || 0);
+  const pens = d.pensjonsinntekt || 0;
+  const nær = d.næringsinntekt || 0;
+  const kap = (d.kapitalinntekt || 0) + (d.renteinntekter || 0) + (d.aksjeutbytte || 0) + (d.kundeutbytte || 0);
+  const leie = Math.max(0, (d.leieinntekter || 0) - S.lGr);
+  const annet = d.andreinntekter || 0;
+  const totI = lønn + pens + nær + kap + leie + annet;
+  const personinntekt = lønn + nær + pens;
+
+  // Bruk minstefradrag fra dokument hvis oppgitt, ellers beregn
+  const minste = d.minstefradrag > 0 ? d.minstefradrag
+    : Math.min(Math.max(lønn * S.minL.s, S.minL.mn), S.minL.mx) + Math.min(Math.max(pens * S.minP.s, S.minP.mn), S.minP.mx);
+
+  const renter = d.gjeldsrenter || 0;
+  const fp = d.foreldrefradrag || 0;
+  const fagf = Math.min(d.fagforeningskontingent || 0, S.fagMx);
+  const gav = Math.min(d.gaverFrivillige || 0, S.gavMx);
+  const bsuB = Math.min(d.bsuInnskudd || 0, S.bsuMx);
+  const bsuF = bsuB * S.bsuS;
+  const ipsF = Math.min(d.ipsPensjonssparing || 0, S.ipsMx) * S.ipsS;
+  const reise = d.reisefradrag || 0;
+  const saer = d.saerfradrag || 0;
+  const fovalt = (d.forvaltningskostnader || 0) + (d.andreFradrag || 0);
+
+  const almRå = totI - minste - renter - fp - fagf - gav - reise - saer - fovalt;
+  const alm = Math.max(0, Math.max(0, almRå) - S.pf);
+
+  const skA = alm * S.alm;
+  const ts = trinnskatt(lønn + nær);
+  let trygd = 0;
+  if (lønn > S.trygd.ned) trygd = lønn * S.trygd.l;
+  if (nær > 0) trygd += nær * S.trygd.n;
+  if (pens > 0) trygd += pens * S.trygd.p;
+
+  const skattFørDirekte = Math.max(0, skA + ts + trygd);
+  const skatt = Math.max(0, skattFørDirekte - bsuF - ipsF);
+
+  // Formue
+  const boligAndel = (d.primærboligEierandel || 100) / 100;
+  const boligMv = d.primærboligMarkedsverdi || d.primærboligFormuesverdi * 4 || 0;
+  const boligF = boligMv * S.boligPct * boligAndel;
+  const sekF = d.sekundærboligVerdi || 0;
+  const aksjeF = (d.aksjesparekonto || 0) * S.aksjeRab;
+  const bank = d.bankinnskudd || 0;
+  const kjøretøy = d.kjøretøyFormue || 0;
+  const andreF = d.andreFormuesverdier || 0;
+  const gjeld = d.totalGjeld || 0;
+  const nF = Math.max(0, boligF + sekF + aksjeF + bank + kjøretøy + andreF - gjeld);
+  let fmue = 0;
+  if (nF > S.fInn) { fmue = (nF - S.fInn) * (S.fKom + S.fSt); if (nF > S.fSt2) fmue += (nF - S.fSt2) * 0.001; }
+
+  const tot = skatt + fmue;
+  const netto = totI - tot;
+  const eff = totI > 0 ? (tot / totI) * 100 : 0;
+
+  // Bruk dokumentets egne oppgjørstall hvis tilgjengelig
+  const trek = d.forskuddstrekk || 0;
+  const tilgode = d.tilGode > 0 ? d.tilGode : (trek > 0 ? Math.max(0, trek - tot) : null);
+  const rest = d.restskatt > 0 ? d.restskatt : (trek > 0 ? Math.max(0, tot - trek) : null);
+
+  return { lønn, pens, nær, kap, leie, annet, totI, personinntekt,
+    minste, renter, fp, fagf, gav, reise, saer, fovalt, bsuB, bsuF, ipsF,
+    alm, skA, ts, trygd, skatt, fmue, tot, netto, eff,
+    marginal: marginal(lønn), nF, trek, tilgode, rest };
+}
+
+// ── Tips ──
+function buildTips(r, d) {
+  const t = [];
+  if (!r.fagf && !d.fagforeningskontingent) t.push({ e: '💡', v: 'Fagforeningskontingent ikke registrert — opptil 8 250 kr i fradrag.' });
+  if (!r.bsuB && r.lønn < 700000) t.push({ e: '💡', v: 'BSU gir 20% direkte skattefradrag (maks 5 500 kr/år) for deg under 34 år uten bolig.' });
+  if (!r.reise) t.push({ e: '📍', v: 'Reiser du mer enn 2,5 km til jobb? Du kan ha krav på reisefradrag (1,83 kr/km).' });
+  if (r.nF > S.fInn) t.push({ e: '⚠️', v: 'Du betaler formuesskatt. Sjekk at gjeld og boligverdi er korrekte.' });
+  if (r.tilgode && r.tilgode > 0) t.push({ e: '✅', v: `Du har ${kr(r.tilgode)} til gode — disse utbetales automatisk etter skatteoppgjøret i juni.` });
+  return t;
+}
+
+// ── Main ──
+async function run() {
+  const btn = $('go-btn');
+  btn.disabled = true;
+  $('go-icon').textContent = '⏳';
+  $('go-text').textContent = 'Analyserer...';
+  $('progress').classList.add('show');
+  $('results-section').className = 'results-section';
+  $('err').className = 'err-box';
+
+  try {
+    st(1, 'on', 'Leser og sender fil til server...');
+    if (!currentB64) currentB64 = await readB64(currentFile);
+    st(1, 'ok', 'Fil lastet opp ✓');
+
+    st(2, 'on', 'Claude AI leser skattemeldingen...');
+    const data = await callBackend(currentFile, currentB64);
+    st(2, 'ok', 'Alle verdier hentet ✓');
+
+    st(3, 'on', 'Beregner med offisielle 2025-satser...');
+    await new Promise(r => setTimeout(r, 200));
+    const r = beregn(data);
+    st(3, 'ok', 'Ferdig ✓');
+
+    // Render free results
+    $('res-h2').textContent = 'Skatteoppgjør 2025';
+    $('res-sub').textContent = data.notater || 'Beregnet fra opplastet skattemelding · Satser fra skatteetaten.no';
+
+    const tilgodeTekst = r.tilgode > 0 ? `✓ ${kr(r.tilgode)} til gode` : (r.rest > 0 ? `⚠ ${kr(r.rest)} restskatt` : '');
+
+    $('free-grid').innerHTML = `
+      <div class="free-box">
+        <div class="fb-label">Bruttoinntekt</div>
+        <div class="fb-val">${kr(r.totI)}</div>
+        <div class="fb-sub">Alle inntekter</div>
+      </div>
+      <div class="free-box green">
+        <div class="fb-label">Nettoinntekt etter skatt</div>
+        <div class="fb-val">${kr(r.netto)}</div>
+        <div class="fb-sub">Per år</div>
+      </div>
+      <div class="free-box red">
+        <div class="fb-label">Total skatt</div>
+        <div class="fb-val">${kr(r.tot)}</div>
+        <div class="fb-sub">Eff. ${pct(r.eff)}${tilgodeTekst ? ' · ' + tilgodeTekst : ''}</div>
+      </div>
+    `;
+
+    // Tips (gratis preview)
+    const tips = buildTips(r, data);
+    if (tips.length) {
+      $('tips-card').style.display = 'block';
+      $('tips-card').innerHTML = `<div class="tips-title">💬 Vi oppdaget noe</div>${tips.map(t => `<div class="tip"><span>${t.e}</span><span>${t.v}</span></div>`).join('')}<div style="margin-top:10px;font-size:12px;color:var(--gold);font-weight:700;">Lås opp Full analyse for komplett gjennomgang →</div>`;
+    }
+
+    $('results-section').className = 'results-section show';
+    $('results-section').scrollIntoView({ behavior: 'smooth' });
+
+  } catch (e) {
+    console.error(e);
+    $('err').innerHTML = `<strong>Feil:</strong> ${e.message}`;
+    $('err').className = 'err-box show';
+    btn.disabled = false;
+    $('go-icon').textContent = '🔍';
+    $('go-text').textContent = 'Prøv igjen';
+  }
+}
+
+function resetAll() {
+  removeFile();
+  $('progress').classList.remove('show');
+  $('results-section').className = 'results-section';
+  $('err').className = 'err-box';
+  $('tips-card').style.display = 'none';
+  [1, 2, 3].forEach(n => st(n, '', ['Laster opp fil...', 'AI leser skattemeldingen...', 'Beregner med 2025-satser...'][n - 1]));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

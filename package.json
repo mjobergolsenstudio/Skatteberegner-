@@ -1,0 +1,11 @@
+{
+  "name": "skatteberegner-no",
+  "version": "1.0.0",
+  "description": "Norsk skatteberegner med AI-analyse av skattemelding",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.37.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
