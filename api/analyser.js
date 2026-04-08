@@ -2,9 +2,9 @@
 // Vercel Serverless Function
 // Tar imot PDF eller bilde, sender til Claude API, returnerer JSON med skattedata
 
-import Anthropic from '@anthropic-ai/sdk';
+const Anthropic = require('@anthropic-ai/sdk');
 
-export const config = {
+module.exports.config = {
   api: {
     bodyParser: {
       sizeLimit: '15mb',
@@ -16,7 +16,7 @@ const client = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
