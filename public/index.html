@@ -474,7 +474,7 @@ function st(n, state, txt) {
 
 // ── API — kaller din Vercel backend ──
 async function callBackend(fileObj, b64data) {
-  const resp = await fetch('/api/analyser', {
+  const resp = await fetch('https://skatteberegner-bice.vercel.app/api/analyser', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ base64: b64data, mediaType: fileObj.type, label: null })
