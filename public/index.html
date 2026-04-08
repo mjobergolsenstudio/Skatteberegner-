@@ -450,6 +450,13 @@ function oppdaterKvoteBadge() {
     badge.style.background = '#d4edda';
     badge.style.borderColor = '#22a854';
     badge.style.color = '#1a7a3c';
+    $('dz').classList.remove('disabled');
+    $('file-input').disabled = false;
+    $('go-btn').onclick = run;
+    if (!currentFile) {
+      $('go-btn').disabled = true;
+      $('go-text').textContent = 'Last opp skattemelding for å fortsette';
+    }
   } else if (igjen > 0) {
     badge.innerHTML = `🎁 Du har <strong>${igjen}</strong> gratis analyse igjen`;
     badge.className = 'quota-badge';
