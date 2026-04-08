@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kontakt oss & FAQ — Skatteberegner.no</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a08;--white:#f5f3ee;--off:#edeae2;--border:#d0ccc2;
+  --green:#1a7a3c;--gl:#d4edda;--gb:#22a854;
+  --red:#c0392b;--rl:#fdecea;
+  --gray:#6b6b60;--grayl:#f0ede6;
+  --serif:'Playfair Display',Georgia,serif;
+  --sans:'DM Sans',system-ui,sans-serif;
+  --mono:'DM Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--white);color:var(--black);font-family:var(--sans);font-size:16px;line-height:1.7;}
+nav{background:var(--black);padding:0 36px;display:flex;align-items:center;border-bottom:3px solid var(--gb);gap:32px;}
+.nav-logo{font-family:var(--serif);font-size:22px;font-weight:900;padding:16px 0;color:#fff;flex:1;text-decoration:none;}
+.nav-logo span{color:var(--gb);}
+.nav-back{color:#888;text-decoration:none;font-size:13px;font-weight:600;transition:color .2s;}
+.nav-back:hover{color:#fff;}
+
+/* HERO */
+.hero{background:var(--black);color:#fff;padding:64px 36px;}
+.hero-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.eyebrow{font-family:var(--mono);font-size:11px;color:var(--gb);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+h1{font-family:var(--serif);font-size:52px;font-weight:900;line-height:1.0;margin-bottom:16px;}
+h1 em{color:var(--gb);font-style:italic;}
+.hero-desc{font-size:16px;color:#888;line-height:1.6;}
+.quick-links{display:flex;flex-direction:column;gap:12px;}
+.quick-link{display:flex;align-items:center;gap:14px;background:#111;border:1px solid #222;border-radius:8px;padding:16px 20px;text-decoration:none;transition:all .2s;}
+.quick-link:hover{border-color:var(--gb);background:#0d1f0d;}
+.ql-icon{font-size:22px;flex-shrink:0;}
+.ql-text{display:flex;flex-direction:column;}
+.ql-label{font-size:14px;font-weight:600;color:#fff;}
+.ql-sub{font-size:12px;color:#555;}
+
+/* CONTACT FORM */
+.section{padding:72px 36px;}
+.section-inner{max-width:900px;margin:0 auto;}
+.section-rule{display:flex;align-items:center;gap:16px;margin-bottom:48px;}
+.section-rule::before,.section-rule::after{content:'';flex:1;height:1px;background:var(--border);}
+.section-label{font-family:var(--mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gray);white-space:nowrap;}
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:64px;align-items:start;}
+.contact-info h2{font-family:var(--serif);font-size:36px;font-weight:700;margin-bottom:14px;line-height:1.1;}
+.contact-info p{font-size:15px;color:var(--gray);line-height:1.7;margin-bottom:24px;}
+.contact-method{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--off);}
+.contact-method:last-child{border:none;}
+.cm-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
+.cm-label{font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;font-family:var(--mono);}
+.cm-val{font-size:15px;color:var(--black);font-weight:500;}
+.cm-note{font-size:12px;color:var(--gray);margin-top:2px;}
+
+/* Form */
+.contact-form{background:var(--off);border-radius:12px;padding:36px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.form-group label{font-size:13px;font-weight:600;color:var(--black);}
+.form-group input,.form-group select,.form-group textarea{padding:12px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:15px;outline:none;background:#fff;transition:border-color .2s;color:var(--black);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gb);}
+.form-group textarea{resize:vertical;min-height:120px;}
+.form-group select{cursor:pointer;}
+.submit-btn{width:100%;padding:15px;background:var(--gb);color:var(--black);border:none;border-radius:8px;font-family:var(--sans);font-size:16px;font-weight:700;cursor:pointer;transition:all .2s;}
+.submit-btn:hover{background:var(--green);color:#fff;}
+.form-note{font-size:12px;color:var(--gray);margin-top:12px;text-align:center;}
+.success-msg{display:none;background:var(--gl);border:1px solid var(--gb);border-radius:8px;padding:20px;text-align:center;font-weight:600;color:var(--green);}
+
+/* FAQ */
+.faq-section{background:var(--grayl);padding:72px 36px;}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);margin-top:0;}
+.faq-item{background:var(--white);padding:0;}
+.faq-q{font-size:16px;font-weight:600;padding:24px 28px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;user-select:none;transition:background .2s;}
+.faq-q:hover{background:var(--grayl);}
+.faq-q.open{background:var(--black);color:#fff;}
+.faq-icon{font-size:20px;flex-shrink:0;transition:transform .3s;}
+.faq-q.open .faq-icon{transform:rotate(45deg);}
+.faq-a{display:none;padding:0 28px 24px;font-size:15px;color:var(--gray);line-height:1.7;border-top:1px solid var(--off);}
+.faq-a.open{display:block;}
+.faq-a a{color:var(--green);}
+.faq-a strong{color:var(--black);}
+
+/* CTA STRIP */
+.cta-strip{background:var(--black);padding:64px 36px;text-align:center;}
+.cta-inner{max-width:600px;margin:0 auto;}
+.cta-strip h2{font-family:var(--serif);font-size:42px;font-weight:900;color:#fff;margin-bottom:14px;line-height:1.1;}
+.cta-strip h2 em{color:var(--gb);font-style:italic;}
+.cta-strip p{color:#888;font-size:16px;margin-bottom:32px;}
+.cta-btn{display:inline-block;background:var(--gb);color:var(--black);padding:16px 40px;border-radius:8px;font-size:17px;font-weight:700;text-decoration:none;transition:all .2s;}
+.cta-btn:hover{background:var(--green);color:#fff;}
+
+footer{background:var(--black);color:#fff;padding:28px 36px;display:flex;justify-content:space-between;align-items:center;border-top:3px solid var(--gb);}
+.footer-logo{font-family:var(--serif);font-size:18px;font-weight:900;}
+.footer-logo span{color:var(--gb);}
+.footer-links{display:flex;gap:20px;}
+.footer-links a{color:#666;text-decoration:none;font-size:13px;}
+.footer-links a:hover{color:#fff;}
+.footer-copy{font-size:12px;color:#444;}
+
+@media(max-width:800px){
+  .hero-inner,.contact-grid,.faq-grid{grid-template-columns:1fr;}
+  .section,.faq-section{padding:48px 20px;}
+  .hero{padding:48px 20px;}
+  .form-row{grid-template-columns:1fr;}
+  nav{padding:0 20px;}
+  footer{flex-direction:column;gap:14px;text-align:center;padding:24px 20px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">Skatte<span>beregner</span>.no</a>
+  <a class="nav-back" href="/">← Tilbake til forsiden</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Hjelp & støtte</div>
+      <h1>Kontakt<br>oss &amp;<br><em>FAQ</em></h1>
+      <p class="hero-desc">Har du spørsmål om tjenesten, betaling eller skatteberegningen? Vi hjelper deg gjerne.</p>
+    </div>
+    <div class="quick-links">
+      <a class="quick-link" href="#kontakt">
+        <span class="ql-icon">✉️</span>
+        <div class="ql-text"><span class="ql-label">Send oss en melding</span><span class="ql-sub">Svar innen 1 virkedag</span></div>
+      </a>
+      <a class="quick-link" href="#faq">
+        <span class="ql-icon">💬</span>
+        <div class="ql-text"><span class="ql-label">Vanlige spørsmål</span><span class="ql-sub">Finn svar med en gang</span></div>
+      </a>
+      <a class="quick-link" href="mailto:post@skatteberegner.no">
+        <span class="ql-icon">📧</span>
+        <div class="ql-text"><span class="ql-label">post@skatteberegner.no</span><span class="ql-sub">Direkte e-post</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="kontakt">
+  <div class="section-inner">
+    <div class="section-rule"><span class="section-label">Kontakt oss</span></div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <h2>Vi hjelper deg gjerne</h2>
+        <p>Har du spørsmål om skatteberegningen, betaling, tilgang eller noe annet? Fyll ut skjemaet så svarer vi innen én virkedag.</p>
+        <div class="contact-method">
+          <span class="cm-icon">✉️</span>
+          <div><div class="cm-label">E-post</div><div class="cm-val">post@skatteberegner.no</div><div class="cm-note">Svarer innen 1 virkedag</div></div>
+        </div>
+        <div class="contact-method">
+          <span class="cm-icon">🔄</span>
+          <div><div class="cm-label">Refusjon / angrerett</div><div class="cm-val">7 dagers pengene-tilbake</div><div class="cm-note">Oppgi ordrenummer fra Stripe</div></div>
+        </div>
+        <div class="contact-method">
+          <span class="cm-icon">🔐</span>
+          <div><div class="cm-label">Personvern / GDPR</div><div class="cm-val">post@skatteberegner.no</div><div class="cm-note">Svar innen 30 dager (lovpålagt)</div></div>
+        </div>
+        <div class="contact-method">
+          <span class="cm-icon">🏢</span>
+          <div><div class="cm-label">Virksomhet</div><div class="cm-val">Mjoberg Olsen Studio</div><div class="cm-note">skatteberegner.no</div></div>
+        </div>
+      </div>
+
+      <div class="contact-form" id="kontakt-form">
+        <div id="success-msg" class="success-msg">
+          ✅ Meldingen er sendt! Vi svarer innen én virkedag.
+        </div>
+        <div id="form-content">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Navn</label>
+              <input type="text" id="f-name" placeholder="Ditt navn">
+            </div>
+            <div class="form-group">
+              <label>E-post *</label>
+              <input type="email" id="f-email" placeholder="din@epost.no" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Hva gjelder henvendelsen?</label>
+            <select id="f-subject">
+              <option value="">Velg kategori...</option>
+              <option value="teknisk">Teknisk problem med tjenesten</option>
+              <option value="betaling">Betaling / tilgang</option>
+              <option value="refusjon">Refusjon / angrerett</option>
+              <option value="beregning">Spørsmål om skatteberegningen</option>
+              <option value="personvern">Personvern / GDPR</option>
+              <option value="annet">Annet</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Melding *</label>
+            <textarea id="f-message" placeholder="Beskriv henvendelsen din..."></textarea>
+          </div>
+          <button class="submit-btn" onclick="sendForm()">Send melding →</button>
+          <p class="form-note">Vi svarer på e-postadressen du oppgir, innen 1 virkedag. Les vår <a href="/personvern.html" style="color:var(--green);">personvernerklæring</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="section-inner">
+    <div class="section-rule"><span class="section-label">Vanlige spørsmål</span></div>
+
+    <div class="faq-grid">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Er resultatene nøyaktige? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Skatteberegner.no bruker offisielle satser fra Skatteetaten for 2025 og AI til å lese skattemeldingen din. Resultатene er gode estimater, men kan avvike fra det endelige skatteoppgjøret. <strong>Tjenesten er ikke en offisiell skatteberegner og erstatter ikke Skatteetatens egne beregninger.</strong> Vi anbefaler alltid å verifisere mot skatteetaten.no.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Lagres skattemeldingen min? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Nei. PDF-filen sendes direkte til Anthropics AI-tjeneste for analyse og <strong>lagres ikke på våre servere</strong>. Etter at analysen er ferdig, slettes dokumentet. Vi lagrer ikke skattetallene dine. Les mer i vår <a href="/personvern.html">personvernerklæring</a>.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Hva er forskjellen på gratis og betalt versjon? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Gratis gir deg <strong>én analyse</strong> med nøkkeltall (bruttoinntekt, total skatt, nettoinntekt og til gode/restskatt). Full tilgang (99 kr) gir ubegrenset antall analyser, linje-for-linje fradragsanalyse, to-persons modus, år-til-år sammenligning og PDF-rapport — hele 2025.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Kan jeg få pengene tilbake? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Ja, du har <strong>7 dagers angrerett</strong> fra kjøpsdato. Send e-post til post@skatteberegner.no med ordrenummeret fra Stripe, så refunderer vi deg innen 5 virkedager. Les mer i våre <a href="/vilkar.html">vilkår for bruk</a>.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Hvilke filformater støttes? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Du kan laste opp <strong>PDF, JPG, PNG og skjermbilde</strong> av skattemeldingen. Beste kvalitet får du med PDF direkte fra skatteetaten.no. Skjermbilde fungerer også bra — sørg for at teksten er tydelig og ikke for liten.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Fradragene mine mangler — hva gjør jeg? <span class="faq-icon">+</span></div>
+        <div class="faq-a">AI-en leser skattemeldingen din slik den er innlevert. Hvis du <strong>ikke har lagt inn fradrag</strong> (f.eks. reisefradrag eller fagforeningskontingent), vil de ikke dukke opp. Fradragsveiviseren hjelper deg finne fradrag du kan ha krav på — men du må melde dem inn til Skatteetaten selv innen 30. april.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Hva er fradragsveiviseren? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Fradragsveiviseren stiller deg 7 enkle spørsmål om din livssituasjon — antall barn, pendlingsavstand, fagforeningsmedlemskap, BSU, IPS osv. Basert på svarene dine beregner vi hvilke fradrag du <strong>kan ha krav på</strong>, men som kanskje ikke er registrert i skattemeldingen ennå. Alle fradrag kan allerede være korrekte.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Hvordan fungerer to-persons modus? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Last opp skattemeldingene til begge parter. Vi beregner optimal fordeling av gjeldsrentene basert på marginalskatt. Siden den med <strong>høyest marginalskatt</strong> sparer mest på renterfradrag, kan riktig fordeling spare dere for tusenvis av kroner. Tilgjengelig for pro-brukere.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Tilgangen min virker ikke etter betaling — hva gjør jeg? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Etter betaling sendes du tilbake til skatteberegner.no med en aktiveringsmodal. Skriv inn <strong>e-posten du brukte ved betaling</strong>. Hvis du er på en annen enhet, klikk på "Har du allerede betalt?" på forsiden og skriv inn e-posten din. Fungerer fortsatt ikke? Send e-post til post@skatteberegner.no.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Hvilke betalingsmetoder godtas? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Vi bruker Stripe for betalingsbehandling og godtar <strong>alle vanlige kort</strong> (Visa, Mastercard, Amex) samt Klarna. Stripe er PCI DSS-sertifisert og en av verdens mest brukte betalingsløsninger. Vi lagrer aldri kortopplysningene dine.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Kan jeg bruke tjenesten for ektefelle/samboer? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Ja, med to-persons modus (pro) kan du laste opp begge skattemeldingene. For gratis analyse: du kan analysere én skattemelding om gangen. Du kan kun laste opp skattemeldinger du <strong>har tillatelse til å behandle</strong> — dvs. din egen eller fra noen som har gitt deg fullmakt.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">Er tjenesten trygg å bruke? <span class="faq-icon">+</span></div>
+        <div class="faq-a">Vi tar sikkerhet på alvor: all kommunikasjon er kryptert (HTTPS), skattemeldingen lagres ikke, e-postadresser lagres kryptert i Supabase (EU), og vi har GDPR-databehandleravtaler med alle underleverandører. Les vår <a href="/personvern.html">personvernerklæring</a> for full oversikt.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-strip">
+  <div class="cta-inner">
+    <h2>Klar til å prøve?<br><em>Det er gratis.</em></h2>
+    <p>Last opp skattemeldingen og få full oversikt på 30 sekunder.</p>
+    <a class="cta-btn" href="/">Start gratis analyse →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Skatte<span>beregner</span>.no</div>
+  <div class="footer-links">
+    <a href="/personvern.html">Personvern</a>
+    <a href="/vilkar.html">Vilkår</a>
+    <a href="/kontakt.html">Kontakt</a>
+    <a href="https://www.skatteetaten.no" target="_blank">Skatteetaten.no</a>
+  </div>
+  <div class="footer-copy">© 2025 Mjoberg Olsen Studio</div>
+</footer>
+
+<script>
+function toggleFaq(el){
+  const a=el.nextElementSibling;
+  const isOpen=a.classList.contains('open');
+  document.querySelectorAll('.faq-q').forEach(q=>{q.classList.remove('open');q.nextElementSibling.classList.remove('open');});
+  if(!isOpen){el.classList.add('open');a.classList.add('open');}
+}
+
+function sendForm(){
+  const email=document.getElementById('f-email').value.trim();
+  const msg=document.getElementById('f-message').value.trim();
+  if(!email||!email.includes('@')){alert('Fyll inn e-postadressen din.');return;}
+  if(!msg){alert('Skriv en melding.');return;}
+  // I produksjon: send til backend eller bruk formspree.io
+  const subject=document.getElementById('f-subject').value||'Henvendelse';
+  const name=document.getElementById('f-name').value||'';
+  const mailtoLink=`mailto:post@skatteberegner.no?subject=${encodeURIComponent('Kontaktskjema: '+subject)}&body=${encodeURIComponent('Fra: '+name+'\nE-post: '+email+'\n\n'+msg)}`;
+  window.location.href=mailtoLink;
+  document.getElementById('form-content').style.display='none';
+  document.getElementById('success-msg').style.display='block';
+}
+</script>
+</body>
+</html>
