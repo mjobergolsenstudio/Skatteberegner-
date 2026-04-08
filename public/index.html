@@ -241,6 +241,9 @@ footer{background:var(--black);color:var(--white);padding:36px;display:flex;just
       <div class="quota-badge" id="quota-badge">
         🎁 Du har <strong id="quota-left">1</strong> gratis analyse igjen
       </div>
+      <div style="text-align:right;margin-top:-8px;margin-bottom:10px;">
+        <a href="#" onclick="visAktiveringModal();return false;" style="font-size:11px;color:var(--gray);text-decoration:underline;">Har du allerede betalt? Aktiver tilgang her</a>
+      </div>
 
       <div class="drop-zone" id="dz">
         <input type="file" id="file-input" accept=".pdf,.jpg,.jpeg,.png,.webp" onchange="pickFile(this.files[0])">
@@ -535,17 +538,18 @@ async function sjekkBetalingFullfort() {
 
   // Vis e-post modal hvis bruker kommer tilbake fra Stripe
   if (betalt === '1') {
-    setTimeout(() => visAktiveringModal(), 500);
     window.history.replaceState({}, '', '/');
+    setTimeout(() => visAktiveringModal(), 300);
+    return; // Ikke sjekk localStorage ennå — vent på e-post fra bruker
   }
 
-  // Sjekk lagret pro-status
+  // Sjekk lagret e-post — uansett om sb_pro er satt eller ikke
   const lagretEmail = localStorage.getItem('sb_email');
-  const lagretPro = localStorage.getItem('sb_pro_' + new Date().getFullYear());
-  if (lagretEmail && lagretPro === '1') {
+  if (lagretEmail) {
     const harTilgang = await sjekkProTilgang(lagretEmail);
     if (harTilgang) {
       erProBruker = true;
+      localStorage.setItem('sb_pro_' + new Date().getFullYear(), '1');
       oppdaterKvoteBadge();
     } else {
       // Tilgang utløpt — nullstill
