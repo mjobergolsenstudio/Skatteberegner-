@@ -1,7 +1,4 @@
 // api/analyser.js
-// Vercel Serverless Function
-// Tar imot PDF eller bilde, sender til Claude API, returnerer JSON med skattedata
-
 const Anthropic = require('@anthropic-ai/sdk');
 
 module.exports.config = {
@@ -109,7 +106,6 @@ Viktige regler:
     });
 
     const rawText = response.content?.find(b => b.type === 'text')?.text || '';
-
     let jsonStr = rawText.trim();
     const fence = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/);
     if (fence) jsonStr = fence[1].trim();
@@ -125,4 +121,4 @@ Viktige regler:
     console.error('Analyser error:', err);
     return res.status(500).json({ ok: false, error: err.message || 'Intern serverfeil' });
   }
-}
+};
