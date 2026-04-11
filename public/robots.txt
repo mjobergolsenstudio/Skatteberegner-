@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://skatteberegner.no/sitemap.xml
