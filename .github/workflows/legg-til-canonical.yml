@@ -1,0 +1,130 @@
+name: Legg til Canonical Tags
+
+on:
+  workflow_dispatch:
+
+jobs:
+  canonical:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Legg til canonical-tag i alle HTML-filer
+        run: |
+          python3 << 'PYEOF'
+          import os
+          import re
+
+          # Hent domenenavn fra repo-navn eller sett manuelt
+          repo = os.environ.get('GITHUB_REPOSITORY', '')
+          repo_name = repo.split('/')[-1].lower()
+
+          # Map repo-navn til domene
+          domain_map = {
+            'wattguiden':          'https://wattguiden.no',
+            'babynorge':           'https://babynorge.no',
+            'forsikringoversikt':  'https://forsikringoversikt.no',
+            'skatteberegner':      'https://skatteberegner.no',
+            'dinekryptoskatt':     'https://dinekryptoskatt.no',
+          }
+
+          base_domain = None
+          for key, domain in domain_map.items():
+            if key in repo_name:
+              base_domain = domain
+              break
+
+          if not base_domain:
+            print(f'Ukjent repo: {repo_name}. Sett CANONICAL_DOMAIN som env-variabel.')
+            exit(1)
+
+          print(f'Domene: {base_domain}')
+
+          # Finn alle HTML-filer
+          html_files = []
+          for root, dirs, files in os.walk('.'):
+            # Hopp over node_modules, .git etc
+            dirs[:] = [d for d in dirs if d not in ['.git', 'node_modules', '.github', 'output', 'outputs']]
+            for f in files:
+              if f.endswith('.html'):
+                html_files.append(os.path.join(root, f))
+
+          print(f'Fant {len(html_files)} HTML-filer')
+
+          updated = 0
+          for filepath in html_files:
+            with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+              content = f.read()
+
+            # Bygg korrekt canonical URL for denne filen
+            rel = os.path.relpath(filepath, '.').replace('\\', '/')
+
+            # index.html i rot = domenet
+            if rel == 'index.html':
+              canonical_url = base_domain + '/'
+            # index.html i undermappe = /mappe/
+            elif rel.endswith('/index.html'):
+              folder = '/' + rel.replace('/index.html', '') + '/'
+              canonical_url = base_domain + folder
+            # Andre HTML-filer = /fil.html
+            else:
+              canonical_url = base_domain + '/' + rel
+
+            canonical_tag = f'<link rel="canonical" href="{canonical_url}"/>'
+
+            # Sjekk om canonical allerede finnes
+            if 'rel="canonical"' in content or "rel='canonical'" in content:
+              # Oppdater eksisterende canonical til riktig URL
+              old = content
+              content = re.sub(
+                r'<link\s+rel=["\']canonical["\']\s+href=["\'][^"\']*["\']\s*/?>',
+                canonical_tag,
+                content
+              )
+              if content != old:
+                print(f'  Oppdatert: {filepath} → {canonical_url}')
+                with open(filepath, 'w', encoding='utf-8') as f:
+                  f.write(content)
+                updated += 1
+              else:
+                print(f'  Uendret: {filepath}')
+            else:
+              # Legg til canonical rett etter <head> eller <meta charset>
+              if '<meta charset' in content:
+                # Sett canonical etter charset-meta
+                content = re.sub(
+                  r'(<meta\s+charset=[^>]+>)',
+                  r'\1\n  ' + canonical_tag,
+                  content,
+                  count=1
+                )
+              elif '<head>' in content.lower():
+                content = re.sub(
+                  r'(<head>)',
+                  r'\1\n  ' + canonical_tag,
+                  content,
+                  count=1,
+                  flags=re.IGNORECASE
+                )
+              else:
+                print(f'  ADVARSEL: Ingen <head> funnet i {filepath}')
+                continue
+
+              print(f'  La til: {filepath} → {canonical_url}')
+              with open(filepath, 'w', encoding='utf-8') as f:
+                f.write(content)
+              updated += 1
+
+          print(f'\nFerdig! {updated}/{len(html_files)} filer oppdatert.')
+          PYEOF
+
+      - name: Commit canonical-tags
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "Canonical Bot"
+          git add -A
+          git diff --staged --quiet || git commit -m "🔗 Legg til canonical-tags på alle HTML-sider"
+          git push
